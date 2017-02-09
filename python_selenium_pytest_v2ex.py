@@ -29,10 +29,10 @@ class TestV2ex:
             ('betty200744','456'),
     ))
     def test_invalid_login(self,username,password):
-        driver.find_element_by_xpath("//a[@href='/signin']").click()
+        driver.find_element_by_xpath("//table//a[@href='/signin']").click()
         WebDriverWait(driver, 1 ).until(
             EC.presence_of_all_elements_located((By.CLASS_NAME, "sl")))
-        driver.find_element_by_xpath("//*[@id='Main']/div[2]/div[2]/form/table/tbody/tr[1]/td[2]/input").send_keys(username)
+        driver.find_element_by_xpath("//form[@method='post']//input[@type='text']").send_keys(username)
         driver.find_element_by_xpath("//input[@type='password']").send_keys(password)
         driver.find_element_by_xpath("//input[@type='submit']").click()
         assert driver.find_element_by_class_name("problem").is_displayed()
@@ -53,14 +53,14 @@ class TestMyV2ex:
         driver.find_element_by_xpath("//a[@href='/signin']").click()
         WebDriverWait(driver, 1).until(
             EC.presence_of_all_elements_located((By.CLASS_NAME, "sl")))
-        driver.find_element_by_xpath("//*[@id='Main']/div[2]/div[2]/form/table/tbody/tr[1]/td[2]/input").send_keys(
+        driver.find_element_by_xpath("//form[@method='post']//input[@type='text']").send_keys(
             'htzhao200744')
         driver.find_element_by_xpath("//input[@type='password']").send_keys('1234qwer')
         driver.find_element_by_xpath("//input[@type='submit']").click()
 
     @pytest.fixture
     def logout(self):
-        driver.find_element_by_xpath("//*[@id='Top']/div/div/table/tbody/tr/td[3]/a[7]").click()
+        driver.find_element_by_xpath("//a[@href='#;']").click()
         Alert(driver).accept()
 
     def setup_class(cls):
@@ -68,7 +68,7 @@ class TestMyV2ex:
         driver.find_element_by_xpath("//a[@href='/signin']").click()
         WebDriverWait(driver, 1).until(
             EC.presence_of_all_elements_located((By.CLASS_NAME, "sl")))
-        driver.find_element_by_xpath("//*[@id='Main']/div[2]/div[2]/form/table/tbody/tr[1]/td[2]/input").send_keys(
+        driver.find_element_by_xpath("//form[@method='post']//input[@type='text']").send_keys(
             'htzhao200744')
         driver.find_element_by_xpath("//input[@type='password']").send_keys('1234qwer')
         driver.find_element_by_xpath("//input[@type='submit']").click()
@@ -77,23 +77,23 @@ class TestMyV2ex:
     def teardown_class(cls):
         driver.close()
 
-    #TODO Need change xpath from absolute to relative
+    #use Xpath=//*[contains(@type,'sub')]
     #TODO Need add re pattern
     def test_action_favorite_it(self):
-        befor_favorite = driver.find_element_by_xpath("//*[@id='Rightbar']/div[2]/div[1]/table[2]/tbody/tr/td[2]/a/span[1]").text
-        driver.find_element_by_xpath("//*[@id='Main']/div[2]/div[3]/table/tbody/tr/td[3]/span[1]/a").click()
-        WebDriverWait(driver,1).until(EC.presence_of_element_located((By.XPATH,"//*[@id='Main']/div[2]/div[3]/a[1]")))
-        driver.find_element_by_xpath("//*[@id='Main']/div[2]/div[3]/a[1]").click()
-        after_favorite = driver.find_element_by_xpath("//*[@id='Rightbar']/div[2]/div[1]/table[2]/tbody/tr/td[2]/a/span[1]").text
+        befor_favorite = driver.find_element_by_xpath("//a[@href='/my/topics']//span[@class='bigger']").text
+        driver.find_element_by_xpath("//span[@class='item_title'][1]").click()
+        WebDriverWait(driver,1).until(EC.presence_of_element_located((By.XPATH,"//a[contains(@href,'favorite')]")))
+        driver.find_element_by_xpath("//a[contains(@href,'favorite')]").click()
+        after_favorite = driver.find_element_by_xpath("//a[@href='/my/topics']//span[@class='bigger']").text
         assert int(after_favorite) != int(befor_favorite)
 
 
-    #TODO Need add re for xpath selector
     def test_action_favorite_node(self):
         driver.get("https://www.v2ex.com/")
-        befor_favo_node = driver.find_element_by_xpath("//*[@id='Rightbar']/div[2]/div[1]/table[2]/tbody/tr/td[1]/a/span[1]").text
-        driver.find_element_by_xpath("//*[@id='Main']/div[2]/div[2]/a[1]").click()
-        after_favo_node = driver.find_element_by_xpath("//*[@id='Rightbar']/div[2]/div[1]/table[2]/tbody/tr/td[1]/a/span[1]").text
+        befor_favo_node = driver.find_element_by_xpath("//a[@href='/my/nodes']//span[@class='bigger']").text
+        driver.find_element_by_xpath("//a[contains(@href, '/go/')][1]").click()
+        driver.find_element_by_xpath("//a[contains(@href,'favorite')]").click()
+        after_favo_node = driver.find_element_by_xpath("//a[@href='/my/nodes']//span[@class='bigger']").text
         assert befor_favo_node != after_favo_node
 
     #TODO
