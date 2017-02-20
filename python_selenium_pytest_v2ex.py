@@ -10,6 +10,7 @@ from selenium.common.exceptions import *
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common import action_chains
 
 driver = webdriver.Chrome()
 
@@ -70,7 +71,7 @@ class TestMyV2ex:
             EC.presence_of_all_elements_located((By.CLASS_NAME, "sl")))
         driver.find_element_by_xpath("//form[@method='post']//input[@type='text']").send_keys(
             'htzhao200744')
-        driver.find_element_by_xpath("//input[@type='password']").send_keys('1234qwer')
+        driver.find_element_by_xpath("//input[@type='password']").send_keys('1q2w3e4r')
         driver.find_element_by_xpath("//input[@type='submit']").click()
 
 
@@ -99,9 +100,29 @@ class TestMyV2ex:
     #TODO
     def test_check_my_favorite_summy(self):
         pass
+
     #TODO
     def test_check_my_favorite_node(self):
         pass
+
+
+    #TODO, bug,  the pre element can not use send_keys()
+    def test_create_topics(self):
+        driver.get("https://www.v2ex.com/")
+        driver.find_element_by_xpath("//a[@href='/new']").click()
+        driver.find_element_by_css_selector("textarea.msl").send_keys("test")
+
+        content = driver.execute_script('document.querySelectorAll("textarea#editor").style.visibility = "";')
+        content.send_keys('test')
+        driver.find_element_by_css_selector("div.select2-container>a")
+        driver.find_element_by_css_selector("input.select2-input").send_keys("python")
+        driver.find_element_by_css_selector("div.select2-result-label").click()
+        driver.find_element_by_css_selector("button[type=button]").click()
+
+
+
+
+
 
 
 
