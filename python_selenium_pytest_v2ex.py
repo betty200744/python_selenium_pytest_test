@@ -13,7 +13,7 @@ from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common import action_chains
 from actions import *
-from verificaton import *
+from verification import *
 
 driver = init_driver()
 
